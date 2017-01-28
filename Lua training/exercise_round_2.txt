@@ -1,0 +1,87 @@
+exercise 2.1)
+
+Write a function named sum_prod that returns both the sum and the product of two numbers:
+
+print(sum_prod(1, 1))    --> 2      1
+print(sum_prod(2, 2))    --> 4      4
+print(sum_prod(3, 5))    --> 8      15
+
+
+exercise 2.2)
+
+Using the function sum_prod from the previous exercise, what will the following print ?
+
+print(sum_prod(3, 3), sum_prod(5, 5))
+
+
+exercise 2.3)
+
+What does the following print ?
+
+an_isle = "Iceland"
+local function do_something(an_isle)
+an_isle = "New Zealand"
+end
+do_something(an_isle)
+print(an_isle)
+
+
+exercise 2.4)
+
+What is the output of the following program?
+local function range(a, b, c)
+    if a > b then
+        return
+    else
+        return a, range(a + c, b, c)
+    end
+end
+print(range(1, 9, 2))
+
+
+exercise 2.5)
+
+Write a function that receives any number of strings
+and returns all of them concatenated together.
+
+
+exercise 2.6)
+
+Assuming x is true and y is nil, what is the value of the following expression ?
+(x and "ABC") .. (y and "DEF" or 123)
+
+
+exercise 2.7)
+
+The expression from the previous exercise does not have a value if x is false.
+Why is that?
+
+
+exercise 2.8)
+
+Change  the greet function below so that the word_used variable can be removed.
+local function greet(word)
+    local word_used = word or "Shiny"
+    print(word_used .. " Verse!") 
+end
+greet()        --> Shiny Verse!
+greet("Hello") --> Hello Verse!
+
+
+exercise 2.9)    OPTIONAL
+
+Below maxmin() is written with an if statement, rewrite it with logical operators instead.
+local function maxmin(a, b)
+    if a > b then
+        return a, b
+    else
+        return b, a
+    end
+end
+print(maxmin(2, 3))	--> 3		2
+print(maxmin(3, 2))	--> 3		2
+
+
+exercise 2.10)    OPTIONAL
+
+Create a table deep copy utility function.

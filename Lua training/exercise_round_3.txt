@@ -1,0 +1,140 @@
+exercise 3.1)
+
+The following MakeDotter function is intended to return a function that appends N dots to its argument (and returns the result).
+It almost works, but every time it's used to make a new dotter function, the old ones stop working right.
+Why does this happen, and what one-line change can be made to make it work right ?
+
+local function make_dotter(n)
+    dots = ""
+    for i = 1, n do
+        dots = dots .. "."
+    end
+    return function(str)
+            return str .. dots
+        end
+end
+
+-- Make a function that appends one dot to its argument:
+local one_dotter = make_dotter(1)
+print(one_dotter("A")) --> A.
+print(one_dotter("B")) --> B.
+-- Make a function that appends three dots to its argument:
+local three_dotter = make_dotter(3)
+print(three_dotter("C")) --> C...
+print(three_dotter("D")) --> D...
+-- one_dotter now appends three dots instead of one:
+print(one_dotter("E")) --> E...   (should print: E. )
+
+
+exercise 3.2)
+
+In your head, figure out what the following prints:
+local a = {}
+local b = "c"
+local c = "b"
+local d = {
+    [a] = {b = c},
+    [b] = {[c] = b},
+    [c] = {[a] = a}}
+print(d.c["b"])
+
+
+exercise 3.3)
+
+By default, table.sort uses "<" to compare array elements, so it can only sort arrays of numbers or arrays of strings.
+Write a comparison function and name it comp_all that allows table.sort to sort arrays of mixed types.
+In the sorted array, all values of a given type should be grouped together.
+Within each such group, numbers and strings should be sorted as usual, and other types should be sorted in some arbitrary but consistent way.
+
+-- Write the comp_all function here
+
+local test = {"c", 3, "", false, "a", {}, "b", 1, true, 2, -100, function() end, 1.1, {}, function() end, {}, false}
+
+table.sort(test, comp_all)
+for k,v in pairs(test) do
+    print(k,v)
+end
+
+-- the output should look something like this:
+1	false
+2	false
+3	true
+4	function: 0x7fe1814076f0
+5	function: 0x7fe181408430
+6	-100
+7	1
+8	1.1
+9	2
+10	3
+11
+12	a
+13	b
+14	c
+15	table: 0x7fe1814083b0
+16	table: 0x7fe1814083f0
+17	table: 0x7fe181408450
+
+
+exercise 3.4)
+
+Current implementation always awards Iceland one point when completing a match as shown here.
+Rewrite it to take an optional numeric parameter (defaulting to 1) and add that many points on match completion.
+
+local iceland_points = 0
+local function complete_match()
+	iceland_points = iceland_points + 1
+end
+complete_match()
+print(iceland_points)
+
+
+exercise 3.5)
+
+Write a stateful iterator generator, sorted_pairs, that behaves just like pairs, except that it goes through key-value pairs in order by key.
+Use the comp_all function from the previous exercise to sort the keys.
+
+
+exercise 3.6)
+
+Write an iterator fromto, in  such a way that the next two loops become equivalent
+local n = 1
+local m = 3
+
+for i = n, m do
+    print(i) --> 1  2  3
+end
+
+for i in fromto(n, m) do
+    print(i) --> 1  2  3
+end
+
+
+example 3.7)    OPTIONAL
+
+Add a step parameter to the iterator from the previous exercise.
+
+
+exercise 3.8)    OPTIONAL
+The print() function converts all its arguments to strings, separates them with tab characters, and outputs them, along with a trailing newline. Write a function that, instead of giving that as output, returns it as a string, so that the following:
+(Hint: you would want to use Lua's select function).
+sprint("Hi", {}, nil)
+returns this:
+"Hi\ttable: 0x484048\tnil\n"
+which, if printed, would look like this:
+Hi       table: 0x484048 nil
+
+
+exercise 3.9    OPTIONAL
+
+Write an iterator all_subs that returns all non-empty substrings always starting from the first letter of a given string.
+(Hint: You would want to use Lua's string.sub function).
+
+for substring in all_subs("many") do
+    print(substring)
+end
+
+--> Output should be
+m
+ma
+man
+many

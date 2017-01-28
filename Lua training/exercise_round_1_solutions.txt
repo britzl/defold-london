@@ -1,0 +1,253 @@
+exercise 1.1)
+pil 2.1
+~ 1 min
+
+What is the value of this expression ?
+type(nil) == nil
+
+solution:
+value is false
+because type(nil) returns the string nil
+which is not equal to the nil value
+print(type(type(nil))) --> string
+
+
+exercise 1.2)
+blp 2.1
+~ 1 min
+
+Why does the following code give an error message rather than printing "Hello" ?
+$ Print("Shiny!")
+stdin:1: attempt to call global 'Print' (a nil value)
+stack traceback:
+	stdin:1: in main chunk
+	[C]: ?
+
+solution:
+Because the "P" needs to be lowercase.
+Error is thrown because global variable Print has not been defined and set and has therefore value nil.
+and nil cannot be called as a function.
+
+
+exercise 1.3)
+blp 2.4
+~ 1 min
+
+Consider the following if statement:
+
+
+if n < 10 then
+    print("x")
+elseif n > 0 then
+    print("x")
+end
+
+If n is 5, how many x's will be printed ?
+
+solution:
+One (flow goes inside the if branch). More than one branch of an if is never executed.
+code flows into first branch when a true test expression is executed, and after that, the flow exits the if/elseif/else statement.
+
+
+exercise 1.4)
+blp 2.5
+~ 5 min
+
+Write a for loop that prints out the even numbers between 2 and 10, inclusive, in reverse order.
+
+solution:
+for i = 10, 2, -2 do
+    print(i)
+end
+
+
+exercise 1.5)
+blp 3.1
+~ 5 min
+
+Write a function called typed_to_string that converts a value to a string and prefixes that string with the value's type.
+
+print(typed_to_string("abc"))   		--> string: abc
+print(typed_to_string(42))   		--> number: 42
+print(typed_to_string(true))		--> boolean: true
+print(typed_to_string(function() end))	--> function: function: 0x485a10
+
+
+solution:
+local function typed_to_string(value)
+	return type(value) .. ": " .. tostring(value)
+end
+print(typed_to_string("abc"))
+print(typed_to_string(42))
+print(typed_to_string(true))
+print(typed_to_string(function() end))
+
+
+exercise 1.6)
+pil 3.1
+~ 1 min
+
+How many times does this loop ?
+for i = -10, 10 do
+    print(i)
+end
+
+solution:
+it loops 21 times
+
+
+exercise 1.7)
+pil 3.2
+~ 1 min
+
+What is the result of the expressions ? (run them in Lua and see the output format)
+2^3
+2^3^4
+2^-3^4
+
+solution:
+8
+2.4178516392293e+24
+4.1359030627651e-25
+
+
+exercise 1.8)
+pil 3.7
+~ 10 min
+
+What will the following script print? Explain.
+sunday = "Monday"
+monday = "Sunday"
+t = {sunday = "Monday", [sunday] = monday }
+print(t.sunday, t[sunday], t[t.sunday])
+
+solution:
+--> Monday    Sunday    Sunday
+
+print(t.sunday)     -- print(t["Sunday"])    --> Monday
+print(t[sunday])    -- print(t["Monday"])    --> Sunday
+print(t[t.sunday])    -- print(t["Monday"])    --> Sunday
+
+
+exercise 1.9)
+pil 3.8
+~ 5 min
+
+Create a table with \\, \t, \n as keys and
+and "backslash", "tab", "newline" as values.
+Do two different write styles,
+one where the table is created in one assignment.
+
+solution:
+esc_seq = {["\\"] = "backslash", ["\t"] = "tab", ["\n"] = "newline"}
+
+esc_seq = {}
+esc_seq["\\"] = "backslash"
+esc_seq["\t"] = "tab"
+esc_seq["\n"] = "newline"
+
+
+exercise 1.10)
+pil 4.1
+~ 1 min
+
+Most languages with a C-like syntax do not offer an
+elseif construct. Why does Lua need this construct
+more than those languages ?
+
+solution:
+Because Lua has no switch statement, thus
+if elseif (else) chains are somewhat common.
+
+
+exercise 1.11)
+fabiom_control_flow slides
+~ 1 min
+
+what happens when this is run? (Hint, you might want to run the code in your mind first)
+
+local i = 5
+while i do
+    print(i)
+    i = i - 1
+end
+
+solution:
+endless loop
+i in the while condition is always true
+i = 0 is true
+
+
+exercise 1.12)    OPTIONAL
+pil 2.6
+~ 5 min
+
+local a = {}
+a.a = a
+
+what would be the value of a.a.a.a ?
+Is any "a" in that sequence somehow different from the others ?
+After adding the line:
+a.a.a.a = 2
+What would be the value of a.a.a.a now ?
+
+solution:
+for k,v in pairs(a) do
+	print(k,v)	--> table: 0x1
+end
+print(a)		--> table: 0x1
+print(a.a)		--> table: 0x1
+print(a.a.a)	--> table: 0x1
+print(a.a.a.a)	--> table: 0x1
+
+Answer 1) when a.a = a the value of a.a.a.a is also the table instance that "a" references.
+Answer 2) No, any "a" in that sequence is not different from the others.
+
+after line a.a.a.a = 2 is added
+for k,v in pairs(a) do
+	print(k,v)	--> a    2
+end
+print(a)		--> table: 0x1
+print(a.a)		--> 
+print(a.a.a)	--> error: attempt to index field 'a' (a number value)
+print(a.a.a.a)	--> error: attempt to index field 'a' (a number value)
+
+the value of a.a.a.a is an error (and a.a.a is also)
+because we have overwritten key "a" of the table instance with number value 2,
+so we can no longer index it as we could when a was a table.
+Note that this works:
+
+
+exercise 1.13)    OPTIONAL
+pil 4.4
+~ 20 min
+
+Create a maze game in maze.lua and run it via the terminal.
+There are four rooms: 
+    1 2
+    3 4
+You start in room 1,
+the game waits for user input (use io.read() from io library).
+if input is "south" you move to room 3,
+if input is "east" you move to room 2,
+if input would go out of the map to "north" or "west",
+or other input, you print out invalid move.
+The game waits again for input
+until you have moved to room 4, then the game ends.
+
+solution:
+local room_1 = {room = 1, south = 3, east = 2}
+local room_2 = {room = 2, south = 4, west = 1}
+local room_3 = {room = 3, north = 1, east = 4}
+local room_4 = {room = 4}
+local rooms = {room_1, room_2, room_3, room_4}
+local im_in_room = room_1
+repeat
+    local move = io.read()
+    if im_in_room[move] ~= nil then
+        im_in_room = rooms[im_in_room[move]]
+    else
+        print("invalid move")
+    end
+until im_in_room.room == 4
+print("congratulations, you're out of the maze!")

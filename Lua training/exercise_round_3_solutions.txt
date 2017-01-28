@@ -1,0 +1,305 @@
+exercise 3.1)
+blp 3.5
+~ 5 min
+
+The following MakeDotter function is intended to return a function that appends N dots to its argument (and returns the result).
+It almost works, but every time it's used to make a new dotter function, the old ones stop working right.
+Why does this happen, and what one-line change can be made to make it work right ?
+
+local function make_dotter(n)
+    dots = ""
+    for i = 1, n do
+        dots = dots .. "."
+    end
+    return function(str)
+            return str .. dots
+        end
+end
+
+-- Make a function that appends one dot to its argument:
+local one_dotter = make_dotter(1)
+print(one_dotter("A")) --> A.
+print(one_dotter("B")) --> B.
+-- Make a function that appends three dots to its argument:
+local three_dotter = make_dotter(3)
+print(three_dotter("C")) --> C...
+print(three_dotter("D")) --> D...
+-- one_dotter now appends three dots instead of one:
+print(one_dotter("E")) --> E...   (should print: E. )
+
+solution:
+put local in front of dots when it is defined in the function.
+For the functions returned to be closures with a private state,
+Dots needs to be local.
+Because it's global, all the functions returned share the same state,
+so they all do the same thing.
+As mentioned earlier, forgetting to make a variable local is a common source of bugs.
+
+
+exercise 3.2)
+blp 4.1
+~ 3 min
+
+In your head, figure out what the following prints:
+local a = {}
+local b = "c"
+local c = "b"
+local d = {
+    [a] = {b = c},
+    [b] = {[c] = b},
+    [c] = {[a] = a} }
+print(d.c["b"])
+
+solution:
+"c"
+To figure this sort of thing out, work from left to right:
+figure out what d is,
+then what d.c is,
+and then what d.c["b"] is.
+_____________________________
+
+exercise 3.3)
+blp 4.2
+~ 10 min
+
+By default, table.sort uses "<" to compare array elements, so it can only sort arrays of numbers or arrays of strings.
+Write a comparison function and name it comp_all that allows table.sort to sort arrays of mixed types.
+In the sorted array, all values of a given type should be grouped together.
+Within each such group, numbers and strings should be sorted as usual, and other types should be sorted in some arbitrary but consistent way.
+
+-- Write the comp_all function here
+
+local test = {"c", 3, "", false, "a", {}, "b", 1, true, 2, -100, function() end, 1.1, {}, function() end, {}, false}
+
+table.sort(test, comp_all)
+for k,v in pairs(test) do
+    print(k,v)
+end
+
+-- the output should look something like this:
+1	false
+2	false
+3	true
+4	function: 0x7fe1814076f0
+5	function: 0x7fe181408430
+6	-100
+7	1
+8	1.1
+9	2
+10	3
+11
+12	a
+13	b
+14	c
+15	table: 0x7fe1814083b0
+16	table: 0x7fe1814083f0
+17	table: 0x7fe181408450
+
+solution:
+local comp_all = function(a, b)
+    if type(a) ~= type(b) then
+        -- If they're of different types, sort them by type:
+        a, b = type(a), type(b)
+    elseif type(a) ~= "number" and type(a) ~= "string" then
+   -- They are the same type and
+   -- if the type is something other than numbers or strings,
+        -- sort them by their tostring representation:
+        a, b = tostring(a), tostring(b)
+    end
+    return a < b
+end
+
+local test = {"c", 3, "", false, "a", {}, "b", 1, true, 2, -100, function() end, 1.1, {}, function() end, {}, false}
+
+table.sort(test, comp_all)
+for k,v in pairs(test) do
+    print(k,v)
+end
+
+
+exercise 3.4)
+ea
+~ 5 min
+
+Current implementation always awards Iceland one point when completing a match as shown here.
+Rewrite it to take an optional numeric parameter (defaulting to 1) and add that many point on match completion.
+
+local iceland_points = 0
+local function complete_match()
+	iceland_points = iceland_points + 1
+end
+complete_match()
+print(iceland_points)
+
+solution:
+local iceland_points = 0
+local function complete_match(points_for_match)
+	points_for_match = points_for_match or 1
+	iceland_points = iceland_points + points_for_match
+end
+complete_match(3)
+print(iceland_points)
+
+
+exercise 3.5)
+blp 4.5
+~ 10 min
+
+Write a stateful iterator generator, sorted_pairs, that behaves just like pairs, except that it goes through key-value pairs in order by key.
+Use the comp_all function from the previous exercise to sort the keys.
+
+solution:
+local comp_all = function(a, b)
+    if type(a) ~= type(b) then
+        -- if they're of different types, sort them by type:
+        a, b = type(a), type(b)
+    elseif type(a) ~= "number" and type(a) ~= "string" then
+        -- If they're something other than numbers or strings,
+        -- sort them by their tostring representation:
+        a, b = tostring(a), tostring(b)
+    end
+    return a < b
+end
+
+local function sorted_pairs(the_table)
+    local sorted_table = {} -- a (soon to be) sorted array of t's key
+
+    for key, _ in pairs(the_table) do
+        sorted_table[#sorted_table + 1] = key -- same as table.insert
+    end
+    table.sort(sorted_table, comp_all)
+    local i = 0
+
+    return function()
+        i = i + 1
+        local key = sorted_table[i]
+        return key, the_table[key]
+    end
+end
+
+local t = {cc = "ccc", "array", aa = "aaa"}
+
+for k, v in sorted_pairs(t) do
+    print("key", k)
+    print("value", v)
+end
+
+
+exercise 3.6)
+pil 7.1
+~ 10 min
+
+Write an iterator fromto, in such a way that the next two loops become equivalent
+local n = 1
+local m = 3
+
+for i = n, m do
+    print(i) --> 1  2  3
+end
+
+for i in fromto(n, m) do
+    print(i) --> 1  2  3
+end
+
+solution:
+local function fromto(i, a)
+    return function()
+            if i <= a then
+                i = i + 1
+                return i - 1
+            end
+        end
+end
+
+for i in fromto(1, 3) do
+    print(i)
+end
+
+
+  example 3.7)    OPTIONAL
+pil 7.2
+~ 10 min
+
+Add a step parameter to the iterator from the previous exercise.
+
+solution:
+local function fromto(i, a, s)
+    return function()
+            if (s >= 0 and i <= a) or (s < 0 and i >= a) then
+                i = i + s
+		     return i - s
+		 end
+        end
+end
+
+for i in fromto(5, -5, -2) do
+    print(i)
+end
+print("-----")
+for i in fromto(-5, 5, 2) do
+    print(i)
+end
+
+
+exercise 3.8)    OPTIONAL
+blp 4.3
+~ 5 min
+The print() function converts all its arguments to strings, separates them with tab characters, and outputs them, along with a trailing newline. Write a function that, instead of giving that as output, returns it as a string, so that the following:
+(Hint: you would want to use Lua's select function).
+sprint("Hi", {}, nil)
+returns this:
+"Hi\ttable: 0x484048\tnil\n"
+which, if printed, would look like this:
+Hi       table: 0x484048 nil
+
+solution:
+-- "String print" -- returns a string of the form output by
+-- print:
+function sprint(...)
+    local args = {...}
+    -- Using select and a numeric for makes sure that no nils
+    -- are missed:
+    local arg_count = select("#", ...)
+    for i = 1, arg_count do
+        args[i] = tostring(args[i])
+    end
+    return table.concat(args, "\t") .. "\n"
+end
+
+print(sprint("Hi", {}, nil))
+
+
+exercise 3.9    OPTIONAL
+pil 7.4 & ea
+~ 10 min
+
+Write an iterator all_subs that returns all non-empty substrings always starting from the first letter of a given string.
+(Hint: You would want to use Lua's string.sub function).
+
+for substring in all_subs("many") do
+    print(substring)
+end
+
+--> Output should be
+m
+ma
+man
+many
+
+solution:
+local function all_subs(string)
+    local k = 0
+    return function()
+            local j = 0
+		 while k < #string do
+		     k = k + 1
+		     while j < #string do
+		         j = j + 1			
+			    return string.sub(string, j, k)
+		     end
+            end
+        end
+end
+for substring in all_subs("many") do
+    print(substring)
+end

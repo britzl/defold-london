@@ -1,0 +1,198 @@
+exercise 2.1)
+blp 3.2
+~ 3 min
+
+Write a function named sum_prod that returns both the sum and the product of two numbers:
+
+print(sum_prod(1, 1))    --> 2      1
+print(sum_prod(2, 2))    --> 4      4
+print(sum_prod(3, 5))    --> 8      15
+
+
+solution:
+local function sum_prod(a, b)
+	return a + b, a * b
+end
+print(sum_prod(1, 1))
+print(sum_prod(2, 2))
+print(sum_prod(3, 5))
+
+
+exercise 2.2)
+blp 3.3
+~ 3 min
+
+Using the function sum_prod from the previous exercise, what will the following print ?
+
+print(sum_prod(3, 3), sum_prod(5, 5))
+
+solution:
+print(sum_prod(3, 3), sum_prod(5, 5))    --> 6    10    25
+
+sum_prod(3, 3) returns 6    9, which is adjusted to one value.
+sum_prod(5, 5) returns 10    25, and both values are used.
+
+
+exercise 2.3)
+blp 3.4
+~ 3 min
+
+What does the following print ?
+
+an_isle = "Iceland"
+local function do_something(an_isle)
+an_isle = "New Zealand"
+end
+do_something(an_isle)
+print(an_isle)
+
+
+solution:
+It prints "Iceland".
+The an_isle inside do_something function is a local variable,
+assigning to it has no effect on the global variable an_isle.
+
+
+exercise 2.4)
+fabiom_functions slides
+~ 5 min
+
+What is the output of the following program ?
+local function range(a, b, c)
+    if a > b then
+        return
+    else
+        return a, range(a + c, b, c)
+    end
+end
+print(range(1, 9, 2))
+
+solution:
+The result is:
+1	3	5	7	9
+
+
+exercise 2.5)
+pil 5.1
+~ 5 min
+Write a function that receives any number of strings
+and returns all of them concatenated together.
+
+solution:
+local function concat(...)
+	local ret = ""
+	for _, v in ipairs({...}) do
+		ret = ret .. v
+	end
+	return ret
+end
+
+print(concat("abc", "def", "ghijk"))
+
+
+exercise 2.6)
+blp 2.2
+~ 1 min
+
+Assuming x is true and y is nil, what is the value of the following expression ?
+(x and "ABC") .. (y and "DEF" or 123)
+
+solution:
+ABC123
+value of type string
+
+
+exercise 2.7)
+blp 2.3
+~ 1 min
+
+The expression from the previous exercise does not have a value if x is false.
+Why is that ?
+
+solution:
+Because it reduces to the following,
+false .. 123
+and the attempt to concatenate a Boolean value will trigger an error
+
+
+exercise 2.8)
+ea
+~ 3 min
+
+Change  the greet function below so that the word_used variable can be removed.
+local function greet(word)
+    local word_used = word or "Shiny"
+    print(word_used .. " Verse!") 
+end
+greet()        --> Shiny Verse!
+greet("Hello") --> Hello Verse!
+
+solution:
+local function greet(word)
+    print((word or "Shiny") .. " Verse!") 
+end
+greet()        --> Shiny Verse!
+greet("Hello") --> Hello Verse!
+
+
+exercise 2.9)    OPTIONAL
+ea
+~ 5 min
+
+Below maxmin() is written with an if statement, rewrite it with logical operators instead.
+local function maxmin(a, b)
+    if a > b then
+        return a, b
+    else
+        return b, a
+    end
+end
+print(maxmin(2, 3))	--> 3		2
+print(maxmin(3, 2))	--> 3		2
+
+solution:
+local function maxmin(a, b)
+	return (a > b) and a or b, (a < b) and a or b
+end
+print(maxmin(3,2))	--> 3		2
+print(maxmin(2,3))	--> 3		2
+
+
+
+exercise 2.10)    OPTIONAL
+ea
+~ 15 min
+
+Create a table deep copy utility function.
+(do not take account setting metatables in this example)
+
+solution:
+local function deep_copy(t)
+    if type(t) ~= "table" then
+        return t
+    end
+
+    local res = {}
+
+    for k,v in pairs(t) do
+        if type(v) == "table" then
+            v = deep_copy(v)
+        end
+        res[k] = v
+    end
+
+    return res
+end
+
+local original = {"the text", 15, {"inner table", 33}}
+local copy = deep_copy(original)
+print("original", original)
+print("copy", copy)
+
+for k, v in pairs(original) do
+    print(k, v)
+end
+print("---------------")
+for k, v in pairs(copy) do
+	print(k, v)
+end
