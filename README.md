@@ -2,10 +2,14 @@
 Exercise projects for the Defold London training January 2017
 
 ## Exercise projects
-There are three different project to work with. Each project is contained within a zip file. The zip file contains all of the assets and code to run the game. Included in each zip file is also a README.md file containing some basic instructions and suggested exercises. The project are:
+There are three different project to work with. Each project is contained within a zip file. The zip file contains all of the assets and code to run the game.
+
+**Included in each zip file is also a README.md file containing some suggested exercises**.
+
+The project are:
 
 ### 1 - Busteroids
-This is a simple asteroids clone. Control your ship and destroy incoming meteors.
+This is a simple asteroids clone. Control your ship and destroy incoming meteors. Try the HTML5 version here: https://britzl.github.io/defold-london/busteroids/
 
 ### 2 - Angry Birds
 The game we all know and love. Kill the piggies! Try the HTML5 version here: https://britzl.github.io/defold-london/angrybirds/
