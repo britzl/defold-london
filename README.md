@@ -18,7 +18,7 @@ The game we all know and love. Kill the piggies! Try the HTML5 version here: htt
 A match-3 Candy Crush clone. Try the HTML5 version here: https://britzl.github.io/defold-london/oceancommotion/
 
 ## How to import an exercise project
-1. Go to the [Defold Dashboard](http://www.dashboard.defold.com) and create an empty project.
+1. Go to the [Defold Dashboard](http://dashboard.defold.com) and create an empty project.
 2. Open Defold and chose File->Open Project
 3. Select your project, click Next
 4. In the Select Branch window choose to create a New Branch and give it a name (any name will do)
