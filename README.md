@@ -1,10 +1,19 @@
 # Defold London training 2017
 Exercise projects for the Defold London training January 2017
 
-## Exercises
+## Exercise projects
+There are three different project to work with. Each project is contained within a zip file. The zip file contains all of the assets and code to run the game. Included in each zip file is also a README.md file containing some basic instructions and suggested exercises. The project are:
 
+### 1 - Busteroids
+This is a simple asteroids clone. Control your ship and destroy incoming meteors.
 
-## Instructions
+### 2 - Angry Birds
+The game we all know and love. Kill the piggies!
+
+### 3 - Ocean Commotion
+A match-3 Candy Crush clone
+
+## How to import an exercise project
 1. Go to the [Defold Dashboard](http://www.dashboard.defold.com) and create an empty project.
 2. Open Defold and chose File->Open Project
 3. Select your project, click Next
