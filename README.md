@@ -8,10 +8,10 @@ There are three different project to work with. Each project is contained within
 This is a simple asteroids clone. Control your ship and destroy incoming meteors.
 
 ### 2 - Angry Birds
-The game we all know and love. Kill the piggies!
+The game we all know and love. Kill the piggies! Try the HTML5 version here: https://britzl.github.io/defold-london/angrybirds/
 
 ### 3 - Ocean Commotion
-A match-3 Candy Crush clone
+A match-3 Candy Crush clone. Try the HTML5 version here: https://britzl.github.io/defold-london/oceancommotion/
 
 ## How to import an exercise project
 1. Go to the [Defold Dashboard](http://www.dashboard.defold.com) and create an empty project.
